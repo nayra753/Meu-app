@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Previdenciária Pro</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f3; display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 450px; }
+        h2 { color: #2c3e50; text-align: center; margin-bottom: 20px; }
+        label { display: block; margin-top: 15px; color: #34495e; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #cbd5e0; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        
+        .btn-calc { width: 100%; padding: 15px; margin-top: 25px; background-color: #3498db; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        
+        #resultado-box { margin-top: 20px; padding: 15px; background: #f0f7ff; border-radius: 8px; border-left: 6px solid #3498db; display: none; }
+        
+        .btn-whatsapp { width: 100%; padding: 15px; margin-top: 15px; background-color: #25d366; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+        .btn-whatsapp:hover { background-color: #128c7e; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Calculadora de Tempo</h2>
+    
+    <label>Seu Nome:</label>
+    <input type="text" id="nomeCliente" placeholder="Ex: Maria Silva">
+
+    <label>Data de Início do Vínculo:</label>
+    <input type="date" id="dataInicio">
+
+    <label>Data de Fim (ou hoje):</label>
+    <input type="date" id="dataFim">
+
+    <button class="btn-calc" onclick="calcularTempo()">CALCULAR AGORA</button>
+
+    <div id="resultado-box">
+        <strong>Resultado Estimado:</strong> <br>
+        <span id="textoResultado"></span>
+        
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ccc;">
+        
+        <p style="font-size: 14px; color: #555;">Deseja validar esse tempo com um especialista?</p>
+        <button class="btn-whatsapp" onclick="enviarWhatsapp()">
+            Falar com Advogado no WhatsApp
+        </button>
+    </div>
+</div>
+
+<script>
+    // Variável global para guardar o resultado
+    let resultadoFormatado = "";
+
+    function calcularTempo() {
+        const inicio = new Date(document.getElementById('dataInicio').value);
+        const fim = new Date(document.getElementById('dataFim').value);
+        
+        if (isNaN(inicio) || isNaN(fim)) {
+            alert("Por favor, preencha as datas corretamente.");
+            return;
+        }
+
+        let diff = fim - inicio;
+        let totalDias = Math.floor(diff / (1000 * 60 * 60 * 24));
+        
+        let anos = Math.floor(totalDias / 365);
+        let restoDias = totalDias % 365;
+        let meses = Math.floor(restoDias / 30);
+        let dias = restoDias % 30;
+
+        resultadoFormatado = `${anos} anos, ${meses} meses e ${dias} dias`;
+        
+        document.getElementById('textoResultado').innerHTML = `<strong>${resultadoFormatado}</strong>`;
+        document.getElementById('resultado-box').style.display = 'block';
+    }
+
+    function enviarWhatsapp() {
+        const nome = document.getElementById('nomeCliente').value || "Cliente";
+        const telefone = "5511999999999"; // <--- COLOQUE SEU NÚMERO AQUI (DDD + NÚMERO)
+        
+        const mensagem = `Olá! Meu nome é ${nome}. Usei sua calculadora previdenciária e meu tempo de contribuição deu: ${resultadoFormatado}. Gostaria de agendar uma consulta para analisar meu caso.`;
+        
+        // Codifica a mensagem para o formato de link (URL)
+        const mensagemCodificada = encodeURIComponent(mensagem);
+        const url = `https://wa.me/${telefone}?text=${mensagemCodificada}`;
+        
+        // Abre o WhatsApp
+        window.open(url, '_blank');
+    }
+</script>
+
+</body>
+</html>
+5577999949802
